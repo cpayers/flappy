@@ -1,42 +1,25 @@
-function Pipe(){
-    this.top = random(height/2);
-    this.bottom = random(height/2);
-    this.x = width;
-    this.w = 35;
-    this.speed = 4;
-    
-    this.highlight = false;
-    
-    this.hits = function(bird) {
-        if (bird.y < this.top || bird.y > height - this.bottom) {
-            if (bird.x > this.x && bird.x < this.x + this.w) {
-                this.highlight = true;
-            return true;
-        }
-    }
-        
-    this.highlight = false;
-    return false;
-    }
-    
-    this.show = function(){
-        fill(197, 157, 31);
-        if (this.highlight) {
-            fill(255, 0, 0);
-        }
-        rect(this.x, 0, this.w, this.top);
-        rect(this.x, height-this.bottom, this.w, this.bottom);
-    }
-    
-    this.update = function(){
-        this.x -= this.speed;
-    }
-    
-    this.offscreen = function() {
-        if (this.x < -this.w) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+function Pipe(x, hole, w, c){
+this.x = x;
+this.hole = hole;
+this.w = w;
+this.c = c;
+}
+
+Pipe.prototype.update = function(){
+ this.x -= SPEED;   
+}
+
+Pipe.prototype.draw = function(){
+    rectMode(CORNERS);
+    stroke(40);
+    strokeWeight(2);
+    fill(this.c);
+    rect(this.x, 0, this.x + 10, this.hole - (this.w/2));
+    rect(this.x, height, this.x + 10, this.hole + (this.w/2));
+}
+
+Pipe.prototype.isPassed = function(x) {
+
+  this.passed = this.x < x;
+  return this.x < x;
 }
