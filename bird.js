@@ -1,37 +1,38 @@
-function Bird(){
-    this.y = height/2;
-    this.x = 65;
+function Bird(x, y, r){
+this.x = x;
+this.y = y;
     
-    this.gravity = 0.6;
-    this.lift = -16;
-    this.velocity = 0;
+this.r = r;
     
-    this.show = function() {
-        fill(238, 253, 0);
-        noStroke();
-        ellipse(this.x, this.y, 25, 25);
-    }
-    
-    this.up = function(){
-        this.velocity += this.lift;
-        println(this.velocity);
-    }
-    
-    
-    this.update = function(){
-    this.velocity += this.gravity;
-    this.velocity *= 0.9;
-    this.y += this.velocity;
-        
-        if (this.y > height) {
-            this.y = height;
-            this.velocity = 0;
-        }
-        
-        if (this.y < 0) {
-            this.y = 0;
-            this.velocity = 0;
-        }
+this.yV = 0;
+}
 
+Bird.prototype.update = function(){
+   this.yV += GRAVITY;
+    this.y += this.yV;
+}
+
+Bird.prototype.up = function(f){
+    this.yV = 0;
+    this.yV += f;
+}
+
+Bird.prototype.collidesWith = function(pipe){
+
+    if (pipe.x - this.x <= this.r && pipe.x - this.x >= -this.r) {
+        
+    var uH = pipe.hole - pipe.w/2;
+    var lH = pipe.hole + pipe.w/2;
+        
+    return (this.y - this.r < uH || this.y + this.r > lH);
+         
     }
+    return false;
+}
+
+Bird.prototype.draw = function(){
+    stroke(40);
+    strokeWeight(2);
+    fill(255, 239, 0);
+    ellipse(this.x, this.y, this.r * 2);
 }
